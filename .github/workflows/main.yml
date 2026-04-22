@@ -1,0 +1,37 @@
+name: Build DialogueFlow-Editor (C++ w/ hxWidgets)
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    # Windows用バイナリが必要な場合は windows-latest に変更
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.3.3
+
+      - name: Install Libraries
+        run: |
+          haxelib install hxcpp
+          haxelib install hxWidgets
+
+      # Windowsの場合、hxWidgetsのセットアップが必要な場合があります
+      # run: haxelib run hxWidgets setup
+
+      - name: Build
+        run: haxe build.hxml
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DialogueFlow-Editor-Win
+          # Windowsの場合、Main.exe が生成されます
+          path: export/cpp/Main.exe
