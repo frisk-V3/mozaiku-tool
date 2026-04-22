@@ -1,4 +1,4 @@
-name: Build DialogueFlow-Editor (C++ w/ hxWidgets)
+name:CI
 
 on:
   push:
